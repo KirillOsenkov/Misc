@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomShapes", "RandomShapes\RandomShapes.csproj", "{C99E0A8E-A2C0-42DE-88C9-03D0F6A24A2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileRangeRename", "FileRangeRename\FileRangeRename.csproj", "{7B6637BB-C50E-40A9-9081-81A6DE402055}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{C99E0A8E-A2C0-42DE-88C9-03D0F6A24A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C99E0A8E-A2C0-42DE-88C9-03D0F6A24A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C99E0A8E-A2C0-42DE-88C9-03D0F6A24A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B6637BB-C50E-40A9-9081-81A6DE402055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B6637BB-C50E-40A9-9081-81A6DE402055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B6637BB-C50E-40A9-9081-81A6DE402055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B6637BB-C50E-40A9-9081-81A6DE402055}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8317325B-5111-48ED-A931-B45A002DE6E6}
 	EndGlobalSection
 EndGlobal

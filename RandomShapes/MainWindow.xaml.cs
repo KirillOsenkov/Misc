@@ -32,15 +32,15 @@ namespace RandomShapes
         {
             //canvas.Children.Clear();
 
-            int howMany = 1;
+            int howMany = 10;
 
             for (int i = 0; i < howMany; i++)
             {
                 var canvasWidth = canvas.ActualWidth;
                 var canvasHeight = canvas.ActualHeight;
 
-                double left = Random * canvasWidth;
-                double top = Random * canvasHeight;
+                double left = Random * canvasWidth * 0.7;
+                double top = Random * canvasHeight * 0.7;
                 double width = (canvasWidth - left) * Random;
                 double height = (canvasHeight - top) * Random;
                 double angle = Random * 90;
