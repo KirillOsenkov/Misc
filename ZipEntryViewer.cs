@@ -5,7 +5,7 @@ class ZipEntryViewer
 {
     static void Main(string[] args)
     {
-        const string filePath = @"C:\Temp\Microsoft.VisualStudio.WebTools.WebToolingAddin_7.5.mpack";
+        const string filePath = @"C:\Temp\1.zip";
 
         using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
         using (var zipArchive = new ZipArchive(stream, ZipArchiveMode.Read))
