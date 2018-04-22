@@ -10,8 +10,10 @@ namespace ColoringState
         public MainWindow()
         {
             InitializeComponent();
-            colorPicker.Color = Colors.Orange;
+            colorPicker.Color = Colors.YellowGreen;
         }
+
+        public double Thickness = 200;
 
         Point startPosition;
         Point endPosition;
@@ -22,7 +24,7 @@ namespace ColoringState
             startPosition = e.GetPosition(canvas);
             line = new Line();
             line.Stroke = new SolidColorBrush(Color.FromArgb(100, colorPicker.Color.R, colorPicker.Color.G, colorPicker.Color.B));
-            line.StrokeThickness = 100;
+            line.StrokeThickness = Thickness;
             line.X1 = startPosition.X;
             line.Y1 = startPosition.Y;
             canvas.Children.Add(line);
