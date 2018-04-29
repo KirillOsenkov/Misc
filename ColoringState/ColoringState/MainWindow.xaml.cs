@@ -27,6 +27,8 @@ namespace ColoringState
             line.StrokeThickness = Thickness;
             line.X1 = startPosition.X;
             line.Y1 = startPosition.Y;
+            line.X2 = line.X1;
+            line.Y2 = line.Y1;
             canvas.Children.Add(line);
         }
 
