@@ -73,7 +73,12 @@ namespace ClassLibrary1
         public static IEnumerable<DependencyObject> GetChildren(DependencyObject visual)
         {
             int count = VisualTreeHelper.GetChildrenCount(visual);
-            var list = new List<DependencyObject>();
+            if (count == 0)
+            {
+                return Enumerable.Empty<DependencyObject>();
+            }
+            
+            var list = new List<DependencyObject>(count);
             for (int i = 0; i < count; i++)
             {
                 var child = VisualTreeHelper.GetChild(visual, i);
