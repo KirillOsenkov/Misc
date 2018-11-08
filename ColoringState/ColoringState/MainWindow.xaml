@@ -1,0 +1,32 @@
+﻿<Window x:Class="ColoringState.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ColoringState"
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        Title="Coloring State" Height="350" Width="525">
+  <Grid>
+    <Canvas x:Name="canvas" 
+          Background="White"
+          MouseLeftButtonDown="canvas_MouseLeftButtonDown" 
+          MouseMove="canvas_MouseMove" 
+          MouseLeftButtonUp="canvas_MouseLeftButtonUp"></Canvas>
+    <StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <Button HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Padding="4"
+            Margin="4"
+            Click="Button_Click">Erase</Button>
+        <Button Padding="4"
+              Margin="0,4,4,4"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Top"
+              Click="Button_Click_1">Undo</Button>
+      </StackPanel>
+      <local:ColorPicker x:Name="colorPicker" HorizontalAlignment="Left" VerticalAlignment="Top"></local:ColorPicker>
+    </StackPanel>
+  </Grid>
+</Window>

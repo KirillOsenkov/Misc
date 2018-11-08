@@ -23,11 +23,18 @@ namespace GuiLabs.Wallpaper
                 ColorTopRight.BackColor,
                 ColorBottomLeft.BackColor,
                 ColorBottomRight.BackColor,
-                64);
+                128);
         }
+
+        private bool suspend = false;
 
         public void Repaint()
         {
+            if (suspend)
+            {
+                return;
+            }
+
             drawWindow1.Refresh();
         }
 
@@ -85,10 +92,13 @@ namespace GuiLabs.Wallpaper
 
         void Randomize()
         {
+            suspend = true;
             ColorTopLeft.SetRandom();
             ColorTopRight.SetRandom();
             ColorBottomLeft.SetRandom();
             ColorBottomRight.SetRandom();
+            suspend = false;
+            Repaint();
         }
 
         public void SaveToFile()

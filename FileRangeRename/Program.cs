@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -8,17 +9,32 @@ namespace FileRangeRename
     {
         static void Main(string[] args)
         {
-            var folder = @"D:\Timelapses\2017\SeptemberGrandViewPark";
-            foreach (var file in Directory.GetFiles(folder))
+            var folder = @"D:\Timelapses\2018\March 17";
+
+            var files = Directory.GetFiles(folder).OrderBy(f => f).ToArray();
+
+            foreach (var file in files)
             {
-                var name = Path.GetFileNameWithoutExtension(file);
-                var number = int.Parse(name.Substring(4));
-                if (number > 1000)
+                int number = GetNumber(file);
+                if (number < 177)
                 {
-                    var newName = Path.Combine(folder, "IMG_" + (number - 1001 + 758).ToString().PadLeft(4, '0') + ".CR2");
+                    number += 311;
+                    var newName = GetFilePath(folder, number);
                     File.Move(file, newName);
                 }
             }
+        }
+
+        private static string GetFilePath(string folder, int index)
+        {
+            return Path.Combine(folder, "IMG_" + index.ToString().PadLeft(4, '0') + ".CR2");
+        }
+
+        private static int GetNumber(string file)
+        {
+            var name = Path.GetFileNameWithoutExtension(file);
+            var number = int.Parse(name.Substring(4));
+            return number;
         }
     }
 }
