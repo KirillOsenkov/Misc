@@ -15,6 +15,8 @@ class FolderTree
         PrintTree(root);
     }
 
+    // see also:
+    // https://github.com/terrajobst/minsk/blob/a68d4dd880d1679a1f2f56c339ade5c95e73bf91/src/Minsk/CodeAnalysis/Binding/BoundNode.cs#L62
     private static void PrintTree(string root, string prefix = "")
     {
         var subdirectories = Directory.GetDirectories(root);
