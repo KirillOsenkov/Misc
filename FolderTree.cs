@@ -24,28 +24,23 @@ class FolderTree
 
         for (int i = 0; i < subdirectories.Length; i++)
         {
-            if (i == subdirectories.Length - 1 && files.Length == 0)
-            {
-                Console.WriteLine(prefix + "└──" + Path.GetFileName(subdirectories[i]));
-                PrintTree(subdirectories[i], prefix + "   ");
-            }
-            else
-            {
-                Console.WriteLine(prefix + "├──" + Path.GetFileName(subdirectories[i]));
-                PrintTree(subdirectories[i], prefix + "│  ");
-            }
+            bool isLast = i == subdirectories.Length - 1 && files.Length == 0;
+            PrintEntry(subdirectories[i], isLast);
+
+            string spacer = isLast ? "   " : "│  ";
+            PrintTree(subdirectories[i], prefix + spacer);
         }
 
         for (int i = 0; i < files.Length; i++)
         {
-            if (i == files.Length - 1)
-            {
-                Console.WriteLine(prefix + "└──" + Path.GetFileName(files[i]));
-            }
-            else
-            {
-                Console.WriteLine(prefix + "├──" + Path.GetFileName(files[i]));
-            }
+            bool isLast = i == files.Length - 1;
+            PrintEntry(files[i], isLast);
+        }
+
+        void PrintEntry(string fullPath, bool isLast)
+        {
+            string spacer = isLast ? "└──" : "├──";
+            Console.WriteLine(prefix + spacer + Path.GetFileName(fullPath));
         }
     }
 }
