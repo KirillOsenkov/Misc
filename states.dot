@@ -1,0 +1,158 @@
+graph G {
+WA [pos="0,10"]
+OR [pos="0,9"]
+CA [pos="0,6"]
+NV [pos="1,7"]
+UT [pos="2,7"]
+AZ [pos="2,5"]
+ID [pos="1,10"]
+MT [pos="2,10"]
+WY [pos="2,9"]
+CO [pos="3,7"]
+NM [pos="3,6"]
+ND [pos="4,10"]
+SD [pos="4,9"]
+NE [pos="4,8"]
+KS [pos="4,7"]
+OK [pos="4,6"]
+TX [pos="4,5"]
+MN [pos="5,10"]
+IA [pos="5,9"]
+MO [pos="5,8"]
+AR [pos="5,6"]
+LA [pos="5,5"]
+MS [pos="6,5"]
+WI [pos="6,10"]
+IL [pos="6,9"]
+IN [pos="7,9"]
+OH [pos="8,9"]
+KY [pos="6,8"]
+TN [pos="6,7"]
+AL [pos="6,6"]
+GA [pos="7,6"]
+FL [pos="7,5"]
+MI [pos="7,10"]
+WV [pos="8,8"]
+PA [pos="9,9"]
+VA [pos="9,7"]
+NC [pos="9,6"]
+SC [pos="9,5"]
+NY [pos="10,10"]
+NJ [pos="10,9"]
+DE [pos="10,8"]
+MD [pos="10,6"]
+NJ [pos="11,7"]
+VT [pos="12,10"]
+MA [pos="12,9"]
+CT [pos="12,8"]
+NH [pos="13,10"]
+RI [pos="13,8"]
+ME [pos="14,10"]
+
+WA -- OR
+WA -- ID
+ID -- MT
+ID -- WY
+ID -- UT
+ID -- NV
+OR -- ID
+OR -- NV
+OR -- CA
+NV -- UT
+NV -- AZ
+NV -- CA
+CA -- AZ
+UT -- WY
+UT -- CO
+UT -- NM
+UT -- AZ
+MT -- ND
+MT -- SD
+MT -- WY
+WY -- SD
+WY -- NE
+WY -- CO
+CO -- NE
+CO -- KS
+CO -- OK
+CO -- NM
+CO -- AZ
+NM -- OK
+NM -- TX
+NM -- AZ
+ND -- MN
+ND -- SD
+SD -- MN
+SD -- IA
+SD -- NE
+NE -- IA
+NE -- MO
+NE -- KS
+KS -- MO
+KS -- OK
+OK -- MO
+OK -- AR
+OK -- TX
+TX -- AR
+TX -- LA
+MN -- WI
+MN -- IA
+IA -- WI
+IA -- IL
+IA -- MO
+MO -- IL
+MO -- KY
+MO -- TN
+MO -- AR
+AR -- TN
+AR -- MS
+AR -- LA
+LA -- MS
+WI -- MI
+WI -- IL
+IL -- IN
+IL -- KY
+MS -- TN
+MS -- AL
+MI -- OH
+MI -- IN
+IN -- OH
+IN -- KY
+KY -- OH
+KY -- WV
+KY -- VA
+KY -- TN
+TN -- VA
+TN -- NC
+TN -- GA
+TN -- AL
+OH -- PA
+OH -- WV
+AL -- GA
+AL -- FL
+FL -- GA
+PA -- NY
+PA -- NJ
+PA -- DE
+PA -- MD
+PA -- WV
+WV -- MD
+WV -- VA
+VA -- MD
+VA -- NC
+NC -- SC
+NC -- GA
+SC -- GA
+MD -- DE
+NJ -- DE
+NJ -- NY
+NY -- VT
+NY -- MA
+NY -- CT
+VT -- NH
+VT -- MA
+MA -- RI
+MA -- CT
+CT -- RI
+NH -- ME
+}
