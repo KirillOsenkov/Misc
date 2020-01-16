@@ -10,25 +10,49 @@ namespace IISLogViewer
         static void Main(string[] args)
         {
             var logFolder = @"C:\temp\indexlogs";
-            var logFiles = Directory.GetFiles(logFolder, "*.log");
+            var logFiles = Directory.GetFiles(logFolder, "u_ex19*.log");
+
+            var queryCountByUser = new Dictionary<string, int>();
+
             foreach (var file in logFiles)
             {
-                new FileProcessor().TranslateFile(file);
+                var usersAndQueries = new FileProcessor().TranslateFile(file);
+                if (usersAndQueries == null)
+                {
+                    continue;
+                }
+
+                foreach (var kvp in usersAndQueries)
+                {
+                    queryCountByUser.TryGetValue(kvp.Key, out int count);
+                    queryCountByUser[kvp.Key] = count + kvp.Value.Count;
+                }
             }
+
+            var topUsers = queryCountByUser.OrderByDescending(kvp => kvp.Value).Take(10).ToArray();
+            var text = string.Join("\r\n", topUsers.Select(t => $"{t.Key},{t.Value}"));
 
             var allUsersFiles = Directory.GetFiles(logFolder, "*.users.txt");
             var lastMonthUsers = GetLastTimeSpan(allUsersFiles, TimeSpan.FromDays(30));
             var lastWeekUsers = GetLastTimeSpan(allUsersFiles, TimeSpan.FromDays(7));
 
-            WriteUsers(logFolder, "allusers.txt", allUsersFiles);
-            WriteUsers(logFolder, "lastweekusers.txt", lastWeekUsers);
-            WriteUsers(logFolder, "lastmonthusers.txt", lastMonthUsers);
+            //WriteUsers(logFolder, "allusers.txt", allUsersFiles);
+            //WriteUsers(logFolder, "lastweekusers.txt", lastWeekUsers);
+            //WriteUsers(logFolder, "lastmonthusers.txt", lastMonthUsers);
         }
+
+        private readonly Dictionary<string, HashSet<string>> usersAndQueries = new Dictionary<string, HashSet<string>>();
 
         private static void WriteUsers(string logFolder, string fileName, IEnumerable<string> usersFiles)
         {
             var allUsers = GetAllUsers(usersFiles);
             File.WriteAllLines(Path.Combine(logFolder, fileName), allUsers);
+        }
+
+        private void WriteUserList(string translatedFile)
+        {
+            var filePath = Path.ChangeExtension(translatedFile, ".users.txt");
+            File.WriteAllLines(filePath, usersAndQueries.Keys.OrderBy(s => s));
         }
 
         private static IEnumerable<string> GetAllUsers(IEnumerable<string> usersFiles)
@@ -54,16 +78,14 @@ namespace IISLogViewer
             return new DateTime(year, month, day);
         }
 
-        private readonly Dictionary<string, HashSet<string>> usersAndQueries = new Dictionary<string, HashSet<string>>();
-
-        private void TranslateFile(string file)
+        private Dictionary<string, HashSet<string>> TranslateFile(string file)
         {
             var translatedFile = Path.ChangeExtension(file, ".txt");
             if (File.Exists(translatedFile) &&
                 File.Exists(Path.ChangeExtension(translatedFile, ".users.txt")) &&
                 new FileInfo(translatedFile).LastWriteTimeUtc > new FileInfo(file).LastWriteTimeUtc)
             {
-                return;
+                return null;
             }
 
             try
@@ -97,19 +119,14 @@ namespace IISLogViewer
                     }
                 }
 
-                File.WriteAllLines(translatedFile, outputLines);
-
-                WriteUserList(translatedFile);
+                //File.WriteAllLines(translatedFile, outputLines);
+                //WriteUserList(translatedFile);
             }
             catch (Exception)
             {
             }
-        }
 
-        private void WriteUserList(string translatedFile)
-        {
-            var filePath = Path.ChangeExtension(translatedFile, ".users.txt");
-            File.WriteAllLines(filePath, usersAndQueries.Keys.OrderBy(s => s));
+            return usersAndQueries;
         }
 
         private string ProcessLine(string line)
