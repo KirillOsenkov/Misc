@@ -12,7 +12,7 @@ namespace IISLogViewer
             var logFolder = @"C:\temp\indexlogs";
             var logFiles = Directory.GetFiles(logFolder, "u_ex19*.log");
 
-            var queryCountByUser = new Dictionary<string, int>();
+            var queryCountByUser = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var file in logFiles)
             {
@@ -29,7 +29,7 @@ namespace IISLogViewer
                 }
             }
 
-            var topUsers = queryCountByUser.OrderByDescending(kvp => kvp.Value).Take(10).ToArray();
+            var topUsers = queryCountByUser.OrderByDescending(kvp => kvp.Value).ToArray();
             var text = string.Join("\r\n", topUsers.Select(t => $"{t.Key},{t.Value}"));
 
             var allUsersFiles = Directory.GetFiles(logFolder, "*.users.txt");
