@@ -43,7 +43,7 @@ namespace WriteableBitmapExperiment
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             KeyDown += Window_KeyDown;
 
-            image = new Image 
+            image = new Image
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Stretch = Stretch.None,
@@ -81,27 +81,28 @@ namespace WriteableBitmapExperiment
                 Number rightBound = leftBound + logicalWidth;
                 Number bottomBound = topBound + logicalHeight;
 
-                int j;
-                Number y;
                 var r = new Random();
 
                 var degreeOfParallelism = Environment.ProcessorCount;
                 var tasks = new Task[degreeOfParallelism];
-                for (y = topBound, j = 0; j < height; y += ystep * degreeOfParallelism, j += degreeOfParallelism)
+
+                for (int core = 0; core < degreeOfParallelism; core++)
                 {
-                    for (int core = 0; core < degreeOfParallelism; core++)
+                    int currentCore = core;
+                    int* localBackBuffer = backBuffer;
+                    tasks[core] = Task.Run(() =>
                     {
-                        int currentCore = core;
-                        tasks[core] = Task.Run(() =>
+                        int j;
+                        Number y;
+                        for (y = topBound, j = 0; j < height; y += ystep * degreeOfParallelism, j += degreeOfParallelism)
                         {
-                            ComputeRow(backBuffer + currentCore * (int)width, y + currentCore * ystep);
-                        });
-                    }
-
-                    Task.WaitAll(tasks);
-
-                    backBuffer += degreeOfParallelism * (int)width;
+                            ComputeRow(localBackBuffer + currentCore * (int)width, y + currentCore * ystep);
+                            localBackBuffer += degreeOfParallelism * (int)width;
+                        }
+                    });
                 }
+
+                Task.WaitAll(tasks);
             }
 
             bitmap.AddDirtyRect(new Int32Rect(0, 0, (int)width, (int)height));
@@ -116,7 +117,7 @@ namespace WriteableBitmapExperiment
             Number x;
             for (x = leftBound, i = 0; i < width; x += xstep, i++)
             {
-                *((int*)(backBuffer + i)) = GetColorInt(x, y);
+                *(backBuffer + i) = GetColorInt(x, y);
             }
         }
 
