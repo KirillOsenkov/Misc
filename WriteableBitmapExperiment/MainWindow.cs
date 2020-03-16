@@ -14,8 +14,8 @@ namespace WriteableBitmapExperiment
     public class MainWindow : Window
     {
         WriteableBitmap bitmap;
-        Number moveFactor = 0.1;
-        Number scaleFactor = 1.5;
+        Number moveFactor = 0.1f;
+        Number scaleFactor = 1.5f;
         Number width;
         Number height;
         Number logicalWidth = 2;
@@ -81,8 +81,6 @@ namespace WriteableBitmapExperiment
                 Number rightBound = leftBound + logicalWidth;
                 Number bottomBound = topBound + logicalHeight;
 
-                var r = new Random();
-
                 var degreeOfParallelism = Environment.ProcessorCount;
                 var tasks = new Task[degreeOfParallelism];
 
@@ -124,9 +122,9 @@ namespace WriteableBitmapExperiment
         private int componentsX = 2;
         private int componentsY = 2;
 
-        Number[,] coefficientsR = new[,] { { 0.226965873510098, 0.0809162576230849 }, { -0.00505726610144281, -0.0809162576230849 } };
-        Number[,] coefficientsG = new[,] { { 0.208636870145256, -0.0455153949129853 }, { 0.0809162576230849, -0.0316079131340176 } };
-        Number[,] coefficientsB = new[,] { { 0.313988713375718, 0.0619515097426744 }, { 0.102409638554217, 0.0619515097426744 } };
+        Number[,] coefficientsR = new Number[,] { { 0.226965873510098, 0.0809162576230849 }, { -0.00505726610144281, -0.0809162576230849 } };
+        Number[,] coefficientsG = new Number[,] { { 0.208636870145256, -0.0455153949129853 }, { 0.0809162576230849, -0.0316079131340176 } };
+        Number[,] coefficientsB = new Number[,] { { 0.313988713375718, 0.0619515097426744 }, { 0.102409638554217, 0.0619515097426744 } };
 
         private int GetColorInt(
             Number x, Number y)
