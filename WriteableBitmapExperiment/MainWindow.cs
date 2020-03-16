@@ -133,11 +133,15 @@ namespace WriteableBitmapExperiment
             var g = 0.0;
             var b = 0.0;
 
+            var piXLogicalWidth = Math.PI * x / logicalWidth;
+            var piYLogicalHeight = Math.PI * y / logicalHeight;
+
             for (var j = 0; j < componentsY; j++)
             {
+                var cosJ = Math.Cos(piYLogicalHeight * j);
                 for (var i = 0; i < componentsX; i++)
                 {
-                    var basis = Math.Cos((Math.PI * x * i) / logicalWidth) * Math.Cos((Math.PI * y * j) / logicalHeight);
+                    var basis = Math.Cos(piXLogicalWidth * i) * cosJ;
                     r += coefficientsR[i, j] * basis;
                     g += coefficientsG[i, j] * basis;
                     b += coefficientsB[i, j] * basis;
