@@ -14,8 +14,8 @@ namespace WriteableBitmapExperiment
     public class MainWindow : Window
     {
         WriteableBitmap bitmap;
-        Number moveFactor = 0.1f;
-        Number scaleFactor = 1.5f;
+        Number moveFactor = 0.02f;
+        Number scaleFactor = 1.03f;
         Number width;
         Number height;
         Number logicalWidth = 2;
@@ -126,7 +126,7 @@ namespace WriteableBitmapExperiment
         Number[,] coefficientsG = new Number[,] { { 0.208636870145256, -0.0455153949129853 }, { 0.0809162576230849, -0.0316079131340176 } };
         Number[,] coefficientsB = new Number[,] { { 0.313988713375718, 0.0619515097426744 }, { 0.102409638554217, 0.0619515097426744 } };
 
-        private int GetColorInt(
+        private int GetColorInt2(
             Number x, Number y)
         {
             var r = 0.0;
@@ -178,7 +178,7 @@ namespace WriteableBitmapExperiment
             else return (int)((1.055 * Math.Pow(v, 1 / 2.4) - 0.055) * 255 + 0.5);
         }
 
-        private int GetColorInt2(Number x, Number y)
+        private int GetColorInt(Number x, Number y)
         {
             var color = GetColor(x, y) * 20;
 
@@ -202,11 +202,13 @@ namespace WriteableBitmapExperiment
             return color_data;
         }
 
+        public const int Iterations = 100;
+
         private int GetColor(Number x0, Number y0)
         {
             Number x = x0;
             Number y = y0;
-            for (int i = 0; i < 300; i++)
+            for (int i = 0; i < Iterations; i++)
             {
                 var x2 = x * x;
                 var y2 = y * y;
