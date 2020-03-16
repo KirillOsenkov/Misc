@@ -13,7 +13,7 @@ namespace ColoringState
             colorPicker.Color = Colors.YellowGreen;
         }
 
-        public double Thickness = 200;
+        public double Thickness = 10;
 
         Point startPosition;
         Point endPosition;
