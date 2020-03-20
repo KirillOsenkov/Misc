@@ -134,7 +134,7 @@ namespace WriteableBitmapExperiment
         Number[,] coefficientsG = new Number[,] { { 0.208636870145256, -0.0455153949129853 }, { 0.0809162576230849, -0.0316079131340176 } };
         Number[,] coefficientsB = new Number[,] { { 0.313988713375718, 0.0619515097426744 }, { 0.102409638554217, 0.0619515097426744 } };
 
-        private int GetColorInt3(Number x, Number y)
+        private int GetColorInt2(Number x, Number y)
         {
             int i = (int)((x - leftBound) / logicalWidth * width);
             int j = (int)((y - topBound) / logicalHeight * height);
@@ -164,7 +164,7 @@ namespace WriteableBitmapExperiment
             return GetIntColor(r, g, b);
         }
 
-        private int GetColorInt2(
+        private int GetColorInt(
             Number x, Number y)
         {
             var r = 0.0;
@@ -225,7 +225,7 @@ namespace WriteableBitmapExperiment
 
         private int GetColorInt4(Number x, Number y) => (20 << 16) + (100 << 8) + 50;
 
-        private int GetColorInt(Number x, Number y)
+        private int GetColorInt1(Number x, Number y)
         {
             var color = GetColor(x, y) * 20;
 
