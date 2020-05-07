@@ -9,19 +9,24 @@ namespace FileRangeRename
     {
         static void Main(string[] args)
         {
-            var folder = @"D:\Timelapses\2018\March 17";
+            var folder = @"D:\Timelapses\2020\May 6 Sunset";
 
             var files = Directory.GetFiles(folder).OrderBy(f => f).ToArray();
 
             foreach (var file in files)
             {
                 int number = GetNumber(file);
-                if (number < 177)
+                if (number < 1000)
                 {
-                    number += 311;
-                    var newName = GetFilePath(folder, number);
-                    File.Move(file, newName);
+                    number += 1000;
                 }
+                else if (number > 9000)
+                {
+                    number -= 9000;
+                }
+
+                var newName = GetFilePath(folder, number);
+                File.Move(file, newName);
             }
         }
 
