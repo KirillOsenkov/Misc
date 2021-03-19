@@ -1,0 +1,19 @@
+<Project DefaultTargets="Copy">
+
+  <PropertyGroup>
+    <SourceDir>C:\temp\a</SourceDir>
+    <DestinationDir>C:\temp\b</DestinationDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SourceFile Include="$(SourceDir)\**\*" />
+    <DestinationFile Include="@(SourceFile->'$(DestinationDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </ItemGroup>
+
+  <Target Name="Copy">
+    <Copy SourceFiles="@(SourceFile)"
+          DestinationFiles="@(DestinationFile)"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>
