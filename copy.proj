@@ -5,15 +5,22 @@
     <DestinationDir>C:\temp\b</DestinationDir>
   </PropertyGroup>
 
-  <ItemGroup>
-    <SourceFile Include="$(SourceDir)\**\*" />
-    <DestinationFile Include="@(SourceFile->'$(DestinationDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
-  </ItemGroup>
-
   <Target Name="Copy">
+    
+    <!-- 
+    PITFALL: if this runs during evaluation, the files might not exist on disk yet.
+    So ensure this runs during execution and the glob is expanded immediately
+    before the actual copy.
+    -->
+    <ItemGroup>
+      <SourceFile Include="$(SourceDir)\**\*" />
+      <DestinationFile Include="@(SourceFile->'$(DestinationDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+    </ItemGroup>
+    
     <Copy SourceFiles="@(SourceFile)"
           DestinationFiles="@(DestinationFile)"
           SkipUnchangedFiles="true" />
+    
   </Target>
 
 </Project>
