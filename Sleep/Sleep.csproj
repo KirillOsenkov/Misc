@@ -7,4 +7,24 @@
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <IsTool>true</IsTool>
+    <ToolCommandName>sleep</ToolCommandName>
+    <PackageId>Sleep</PackageId>
+    <Authors>Kirill Osenkov</Authors>
+    <Company>Microsoft</Company>
+    <Description>sleep.exe - sleeps for a specified number of seconds (milliseconds, minutes, hours, days)</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/KirillOsenkov/Misc</PackageProjectUrl>
+    <IconFilePath>$(MSBuildThisFileDirectory)\sleep.png</IconFilePath>
+    <PackageIcon>sleep.png</PackageIcon>
+    <RepositoryUrl>https://github.com/KirillOsenkov/Misc</RepositoryUrl>
+    <PackageTags>Sleep</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="sleep.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
 </Project>

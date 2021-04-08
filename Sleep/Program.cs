@@ -7,39 +7,56 @@ namespace Sleep
     {
         static int Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length == 0)
             {
-                Console.WriteLine("Usage: sleep [500ms]|[42s]");
+                Console.WriteLine("Usage: sleep [500ms]|[40s]|[3m]|[2h]|[5d]");
                 return 1;
             }
 
-            TimeSpan duration;
-            var arg = args[0];
-            if (arg.EndsWith("ms"))
+            TimeSpan duration = TimeSpan.Zero;
+
+            var prefixes = new (string prefix, Func<double, TimeSpan> function)[]
             {
-                arg = arg.Substring(0, arg.Length - 2);
-                if (!int.TryParse(arg, out var ms) || ms < 0)
+                ("ms", TimeSpan.FromMilliseconds),
+                ("s", TimeSpan.FromSeconds),
+                ("m", TimeSpan.FromMinutes),
+                ("h", TimeSpan.FromHours),
+                ("d", TimeSpan.FromDays)
+            };
+
+            foreach (var arg in args)
+            {
+                bool foundPrefix = false;
+                foreach (var prefixHandler in prefixes)
                 {
-                    Console.Error.WriteLine($"Invalid number of milliseconds: {arg}");
-                    return 2;
+                    string trimmed = arg;
+                    if (trimmed.EndsWith(prefixHandler.prefix, StringComparison.OrdinalIgnoreCase))
+                    {
+                        trimmed = trimmed.Substring(0, trimmed.Length - prefixHandler.prefix.Length);
+                        if (!double.TryParse(trimmed, out var number) || number < 0)
+                        {
+                            Console.Error.WriteLine($"Invalid number: {trimmed}");
+                            return 2;
+                        }
+
+                        foundPrefix = true;
+                        duration += prefixHandler.function(number);
+                        break;
+                    }
                 }
 
-                duration = TimeSpan.FromMilliseconds(ms);
-            }
-            else
-            {
-                if (arg.EndsWith("s"))
+                if (foundPrefix)
                 {
-                    arg = arg.Substring(0, arg.Length - 1);
+                    continue;
                 }
 
-                if (!int.TryParse(arg, out var s) || s < 0)
+                if (!double.TryParse(arg, out var s) || s < 0)
                 {
                     Console.Error.WriteLine($"Invalid number of seconds: {arg}");
                     return 3;
                 }
 
-                duration = TimeSpan.FromSeconds(s);
+                duration += TimeSpan.FromSeconds(s);
             }
 
             Thread.Sleep(duration);
