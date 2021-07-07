@@ -1,0 +1,45 @@
+trigger:
+- main
+
+pool:
+  vmImage: windows-2019
+
+steps:
+- powershell: |
+    $LogDir = "$(Build.ArtifactStagingDirectory)\build_logs"
+    md $LogDir
+
+    $key = "HKLM:\\SOFTWARE\Microsoft\Windows\Windows Error Reporting\LocalDumps"
+
+    if( -not (Test-Path -Path $key) )
+    {
+        New-Item -Path $key
+    }
+
+    Set-ItemProperty -Path $key -Name 'DumpType' -Value 2 -Force
+    Set-ItemProperty -Path $key -Name 'DumpCount' -Value 1000 -Force
+    Set-ItemProperty -Path $key -Name 'DumpFolder' -Type 'ExpandString' -Value $LogDir -Force
+
+    $key = "HKLM:\\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AeDebug"
+    Remove-ItemProperty -Path $key -Name 'Debugger'
+
+    $crasherUrl = "https://kirillosenkovfiles.blob.core.windows.net/kirillosenkovblob/crasher.exe"
+    $crasherFile = "$LogDir\crasher.exe"
+    Invoke-WebRequest -Uri $crasherUrl -OutFile $crasherFile
+
+    & $crasherFile
+  displayName: Enable LocalDumps in registry
+  continueOnError: true
+
+- powershell: |
+    Start-Sleep 15
+  displayName: sleep
+  continueOnError: true
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  displayName: Create build logs artifact
+  inputs:
+    pathtoPublish: $(Build.ArtifactStagingDirectory)/build_logs/
+    artifactName: build_logs
+  condition: succeededOrFailed()
