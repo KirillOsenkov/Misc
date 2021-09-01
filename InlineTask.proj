@@ -8,6 +8,26 @@
     <Task>
       <Code Type="Fragment" Language="cs">
         Output1 = Input1;
+
+        var e = new BuildErrorEventArgs
+        (
+            "subcategory",
+            "errorCode",
+            "file",
+            1,
+            2,
+            3,
+            4,
+            "Message test {0}",
+            "helpKeyword",
+            "TaskName",
+            "helpLink",
+            DateTime.UtcNow,
+            new object[] { "arg" }
+        );
+        //BuildEngine.LogErrorEvent(e);
+
+        return Log.HasLoggedErrors;
       </Code>
     </Task>
   </UsingTask>
