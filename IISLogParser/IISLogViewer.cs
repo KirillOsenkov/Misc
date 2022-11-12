@@ -10,7 +10,7 @@ namespace IISLogViewer
         static void Main(string[] args)
         {
             var logFolder = @"C:\temp\indexlogs";
-            var logFiles = Directory.GetFiles(logFolder, "u_ex19*.log");
+            var logFiles = Directory.GetFiles(logFolder, "u_ex*.log");
 
             var queryCountByUser = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
@@ -36,9 +36,9 @@ namespace IISLogViewer
             var lastMonthUsers = GetLastTimeSpan(allUsersFiles, TimeSpan.FromDays(30));
             var lastWeekUsers = GetLastTimeSpan(allUsersFiles, TimeSpan.FromDays(7));
 
-            //WriteUsers(logFolder, "allusers.txt", allUsersFiles);
-            //WriteUsers(logFolder, "lastweekusers.txt", lastWeekUsers);
-            //WriteUsers(logFolder, "lastmonthusers.txt", lastMonthUsers);
+            WriteUsers(logFolder, "allusers.txt", allUsersFiles);
+            WriteUsers(logFolder, "lastweekusers.txt", lastWeekUsers);
+            WriteUsers(logFolder, "lastmonthusers.txt", lastMonthUsers);
         }
 
         private readonly Dictionary<string, HashSet<string>> usersAndQueries = new Dictionary<string, HashSet<string>>();
@@ -119,8 +119,8 @@ namespace IISLogViewer
                     }
                 }
 
-                //File.WriteAllLines(translatedFile, outputLines);
-                //WriteUserList(translatedFile);
+                File.WriteAllLines(translatedFile, outputLines);
+                WriteUserList(translatedFile);
             }
             catch (Exception)
             {
