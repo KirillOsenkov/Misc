@@ -8,7 +8,7 @@ namespace MouseMover
 {
     class Program
     {
-        static TimeSpan interval = TimeSpan.FromSeconds(30);
+        static TimeSpan interval = TimeSpan.FromSeconds(5);
         private const int delta = 1000;
 
         [STAThread]
@@ -26,7 +26,7 @@ namespace MouseMover
 
         private static void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var timer = new DispatcherTimer();
+            timer = new DispatcherTimer();
             timer.Interval = interval;
             timer.Start();
             timer.Tick += Timer_Tick;
@@ -34,6 +34,7 @@ namespace MouseMover
 
         static Point previousPosition;
         static bool wasLeft = false;
+        private static DispatcherTimer timer;
 
         private static void Timer_Tick(object sender, EventArgs e)
         {
@@ -41,7 +42,7 @@ namespace MouseMover
             if (position == previousPosition)
             {
                 position = IncrementPosition(position);
-                SetCursorPos((uint)position.X, (uint)position.Y);
+                SendMouseEvent((uint)position.X, (uint)position.Y);
             }
 
             previousPosition = position;
@@ -76,11 +77,18 @@ namespace MouseMover
         [DllImport("user32.dll")]
         public static extern bool GetCursorPos(out POINT lpPoint);
 
-        //[DllImport("User32.dll")]
-        //public static extern bool SetCursorPos(int X, int Y);
+        [DllImport("User32.dll")]
+        public static extern bool SetCursorPos(int X, int Y);
 
-        public static void SetCursorPos(uint screenX, uint screenY)
+        [DllImport("CoreDll.dll")]
+        public static extern void SystemIdleTimerReset();
+
+        public static void SendMouseEvent(uint screenX, uint screenY)
         {
+            //SystemIdleTimerReset();
+
+            SetCursorPos((int)screenX, (int)screenY);
+
             // Convert the device-units into normalized screen space.
             // We find the center-point of the pixel in normalized screen
             // space by finding the left/right/top/bottom edges and
