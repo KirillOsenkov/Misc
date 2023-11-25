@@ -4,19 +4,19 @@ class Program
 {
     static void Main()
     {
-        Solve(numbers: 9, pluses: 3, minuses: 1, target: 100, stringSoFar: "");
+        Solve(digits: 9, pluses: 3, minuses: 1, target: 100, stringSoFar: "");
     }
 
-    static void Solve(int numbers, int pluses, int minuses, int target, string stringSoFar = "")
+    static void Solve(int digits, int pluses, int minuses, int target, string stringSoFar = "")
     {
-        if (numbers <= pluses + minuses)
+        if (digits <= pluses + minuses)
         {
             return;
         }
 
         int currentNumber = 0;
 
-        for (int i = numbers; i > pluses + minuses; i--)
+        for (int i = digits; i > pluses + minuses; i--)
         {
             currentNumber = currentNumber * 10 + i;
 
@@ -53,12 +53,13 @@ class Program
             }
         }
 
+        stringSoFar = $"{stringSoFar} + {currentNumber}";
         if (currentNumber == target)
         {
-            stringSoFar = $"{stringSoFar} + {currentNumber}";
-
             FoundSolution($"{stringSoFar}");
         }
+
+        Console.WriteLine(stringSoFar);
     }
 
     private static void FoundSolution(string solution)
