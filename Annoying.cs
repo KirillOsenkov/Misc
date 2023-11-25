@@ -4,7 +4,7 @@ class Program
 {
     static void Main()
     {
-        Solve(numbers: 9, pluses: 3, minuses: 1, target: 200, stringSoFar: "");
+        Solve(numbers: 9, pluses: 3, minuses: 1, target: 100, stringSoFar: "");
     }
 
     static void Solve(int numbers, int pluses, int minuses, int target, string stringSoFar = "")
