@@ -24,4 +24,19 @@ class ZipEntryViewer
             }
         }
     }
+
+    static void SetPermissions(string filePath, string entryFullName, int attributes = 755)
+    {
+        using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite))
+        using (var zipArchive = new ZipArchive(stream, ZipArchiveMode.Read | ZipArchiveMode.Update))
+        {
+            foreach (var entry in zipArchive.Entries)
+            {
+                if (entry.FullName == entryFullName)
+                {
+                    entry.ExternalAttributes = 755;
+                }
+            }
+        }
+    }    
 }
