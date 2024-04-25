@@ -12,6 +12,9 @@ cd "%directory%"
 md a b c
 cd a
 md a1 a2
+cd a1
+md a11 a12
+cd ..
 cd ..
 cd b
 md b1
