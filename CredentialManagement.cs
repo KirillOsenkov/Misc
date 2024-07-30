@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Win32.SafeHandles;
@@ -105,6 +107,61 @@ public static class CredentialManager
         }
 
         return Encoding.Unicode.GetString(array);
+    }
+
+    public static byte[] Compress(this byte[] bytes)
+    {
+        if (bytes == null || bytes.Length == 0)
+        {
+            return bytes;
+        }
+
+        using (var memoryStream = new MemoryStream(bytes))
+        using (var output = new MemoryStream())
+        {
+            using (var gzipStream = new GZipStream(output, CompressionLevel.Optimal))
+            {
+                memoryStream.CopyTo(gzipStream);
+            }
+
+            return output.ToArray();
+        }
+    }
+
+    public static byte[] Decompress(this byte[] bytes)
+    {
+        if (bytes == null || bytes.Length == 0)
+        {
+            return bytes;
+        }
+
+        using (var memoryStream = new MemoryStream(bytes))
+        using (var output = new MemoryStream())
+        using (var gzipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
+        {
+            gzipStream.CopyTo(output);
+            return output.ToArray();
+        }
+    }
+
+    public static byte[] Compress(this string text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return Array.Empty<byte>();
+        }
+
+        return Encoding.UTF8.GetBytes(text).Compress();
+    }
+
+    public static string DecompressToString(this byte[] bytes)
+    {
+        if (bytes == null)
+        {
+            return string.Empty;
+        }
+
+        return Encoding.UTF8.GetString(bytes.Decompress());
     }
 
     internal enum CredentialType : uint
