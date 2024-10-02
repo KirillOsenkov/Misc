@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,7 +11,26 @@ class GetProcessParameters
 {
     static void Main(string[] args)
     {
-        var dir = GetCurrentDirectory(19948, out bool is32Bit);
+        var list = new List<string>();
+
+        foreach (var process in Process.GetProcesses())
+        {
+            //var dir = GetCurrentDirectory(process.Id, out bool is32Bit);
+            try
+            {
+                list.Add(process.MainModule.FileName);
+            }
+            catch
+            {
+            }
+        }
+
+        list.Sort();
+
+        foreach (var item in list)
+        {
+            Console.WriteLine(item);
+        }
     }
 
     public static string GetCurrentDirectory(int processId, out bool is32bit)
