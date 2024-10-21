@@ -2,6 +2,25 @@ using System;
 using System.IO;
 using System.Threading;
 
+/*
+Win10 NTFS:
+
+Created: original.txt~RF46c2c0f.TMP
+Deleted: original.txt~RF46c2c0f.TMP
+Renamed: original.txt~RF46c2c0f.TMP (original.txt)
+Renamed: original.txt (replacement.txt)
+Deleted: original.txt~RF46c2c0f.TMP
+
+Win11 ReFS:
+
+Created: original.txt~RF39c2f1b3.TMP
+Deleted: original.txt
+Changed: original.txt~RF39c2f1b3.TMP
+Renamed: original.txt (replacement.txt)
+Deleted: original.txt~RF39c2f1b3.TMP
+
+*/
+
 class Program
 {
     static void Main(string[] args)
