@@ -42,6 +42,10 @@ class Program
                     break;
                 }
             }
+
+            var attributes = _entry->FileAttributes;
+            string fileName = _entry->FileName;
+            bool isDirectory = (attributes & FileAttributes.Directory) != 0;
         } while (true);
 
         CloseDirectoryHandle();
@@ -365,7 +369,7 @@ internal struct FILE_FULL_DIR_INFORMATION
         {
             fixed (char* ptr = &_fileName)
             {
-                return new string((sbyte*)ptr, 0, (int)FileNameLength / 2);
+                return new string((char*)ptr, 0, (int)FileNameLength / 2);
             }
         }
     }
