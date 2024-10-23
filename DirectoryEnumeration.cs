@@ -2,15 +2,9 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 class Program
 {
-    private IntPtr _directoryHandle;
-    private IntPtr _buffer;
-    private unsafe FILE_FULL_DIR_INFORMATION* _entry;
-    private const int _bufferLength = 4096;
-
     static void Main(string[] args)
     {
         var program = new Program();
@@ -19,21 +13,23 @@ class Program
 
     unsafe void EnumerateDirectory(string directory)
     {
-        _directoryHandle = CreateDirectoryHandle(directory);
-
+        var _directoryHandle = CreateDirectoryHandle(directory);
         if (_directoryHandle == IntPtr.Zero || _directoryHandle == (IntPtr)(-1))
         {
             return;
         }
 
-        _buffer = Marshal.AllocHGlobal(_bufferLength);
+        const int _bufferLength = 4096;
+        var _buffer = Marshal.AllocHGlobal(_bufferLength);
+
+        FILE_FULL_DIR_INFORMATION* _entry = null;
 
         do
         {
             _entry = FILE_FULL_DIR_INFORMATION.GetNextInfo(_entry);
             if (_entry == null)
             {
-                if (GetData())
+                if (GetData(_directoryHandle, _buffer, _bufferLength))
                 {
                     _entry = (FILE_FULL_DIR_INFORMATION*)_buffer;
                 }
@@ -46,23 +42,16 @@ class Program
             var attributes = _entry->FileAttributes;
             string fileName = _entry->FileName;
             bool isDirectory = (attributes & FileAttributes.Directory) != 0;
+            if (fileName == "." || fileName == "..")
+            {
+                continue;
+            }
+
         } while (true);
 
-        CloseDirectoryHandle();
-    }
+        Marshal.FreeHGlobal(_buffer);
 
-    private unsafe void FindNextEntry()
-    {
-        _entry = FILE_FULL_DIR_INFORMATION.GetNextInfo(_entry);
-        if (_entry != null)
-        {
-            return;
-        }
-
-        if (GetData())
-        {
-            _entry = (FILE_FULL_DIR_INFORMATION*)_buffer;
-        }
+        CloseHandle(_directoryHandle);
     }
 
     internal enum BOOLEAN : byte
@@ -109,17 +98,17 @@ class Program
     /// </summary>
     /// <returns>'true' if new data was found</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private unsafe bool GetData()
+    private unsafe bool GetData(IntPtr directoryHandle, IntPtr buffer, int bufferLength)
     {
         IO_STATUS_BLOCK statusBlock;
         int status = NtQueryDirectoryFile(
-            FileHandle: _directoryHandle,
+            FileHandle: directoryHandle,
             Event: IntPtr.Zero,
             ApcRoutine: IntPtr.Zero,
             ApcContext: IntPtr.Zero,
             IoStatusBlock: &statusBlock,
-            FileInformation: _buffer,
-            Length: (uint)_bufferLength,
+            FileInformation: buffer,
+            Length: (uint)bufferLength,
             FileInformationClass: FILE_INFORMATION_CLASS.FileFullDirectoryInformation,
             ReturnSingleEntry: BOOLEAN.FALSE,
             FileName: null,
@@ -160,16 +149,6 @@ class Program
         }
 
         return handle;
-    }
-
-    private void CloseDirectoryHandle()
-    {
-        // As handles can be reused we want to be extra careful to close handles only once
-        IntPtr handle = Interlocked.Exchange(ref _directoryHandle, IntPtr.Zero);
-        if (handle != IntPtr.Zero)
-        {
-            CloseHandle(handle);
-        }
     }
 
     [DllImport("kernel32.dll", BestFitMapping = false, CharSet = CharSet.Unicode, EntryPoint = "CreateFileW", ExactSpelling = true, SetLastError = true)]
