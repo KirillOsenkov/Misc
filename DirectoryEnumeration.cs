@@ -76,7 +76,7 @@ class Program
     }
 
     [DllImport("ntdll.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-    public unsafe static extern int NtQueryDirectoryFile(
+    internal unsafe static extern int NtQueryDirectoryFile(
         IntPtr FileHandle,
         IntPtr Event,
         IntPtr ApcRoutine,
@@ -173,18 +173,6 @@ class Program
     internal const int ERROR_PATH_NOT_FOUND = 3;
     internal const int ERROR_ACCESS_DENIED = 5;
     internal const int ERROR_DIRECTORY = 267;
-
-    private bool ContinueOnDirectoryError(int error, bool ignoreNotFound)
-    {
-        // Directories can be removed (ERROR_FILE_NOT_FOUND) or replaced with a file of the same name (ERROR_DIRECTORY) while
-        // we are enumerating. The only reasonable way to handle this is to simply move on. There is no such thing as a "true"
-        // snapshot of filesystem state- our "snapshot" will consider the name non-existent in this rare case.
-        return (ignoreNotFound &&
-            (error == ERROR_FILE_NOT_FOUND ||
-            error == ERROR_PATH_NOT_FOUND ||
-            error == ERROR_DIRECTORY))
-            || (error == ERROR_ACCESS_DENIED);
-    }
 
     internal unsafe static IntPtr CreateFile_IntPtr(string lpFileName, int dwDesiredAccess, FileShare dwShareMode, FileMode dwCreationDisposition, int dwFlagsAndAttributes)
     {
