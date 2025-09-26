@@ -30,7 +30,7 @@ class Program
         var projects = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var csFilePath in lines)
         {
-            if (!File.Exists(csFilePath) && !Directory.Exists(csFilePath))
+            if (!File.Exists(csFilePath))
             {
                 continue;
             }
