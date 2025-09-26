@@ -1,14 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Exe</OutputType>
     <DebugType>embedded</DebugType>
     <LangVersion>latest</LangVersion>
-    <OutputType>Exe</OutputType>
+    <RollForward>major</RollForward>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NetFramework.ReferenceAssemblies" Version="1.0.3" />
-  </ItemGroup>
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Authors>Kirill Osenkov</Authors>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>findproject</ToolCommandName>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>findproject</PackageId>
+    <Description>Finds the nearest containing .csproj file</Description>
+    <PackageTags>.NET find .csproj project tool</PackageTags>
+    <PackageProjectUrl>https://github.com/KirillOsenkov/CodeCleanupTools</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/KirillOsenkov/CodeCleanupTools</RepositoryUrl>
+  </PropertyGroup>
 
 </Project>
