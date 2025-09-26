@@ -30,13 +30,25 @@ class Program
         var projects = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var csFilePath in lines)
         {
-            if (!File.Exists(csFilePath))
+            if (!File.Exists(csFilePath) && !Directory.Exists(csFilePath))
             {
                 continue;
             }
 
             var project = FindNearestProject(csFilePath);
-            projects.Add(project);
+            if (File.Exists(project))
+            {
+                projects.Add(project);
+            }
+        }
+
+        if (lines.Count == 0)
+        {
+            var project = GetPathOfFileAbove(Environment.CurrentDirectory, "*.csproj", includeStartingDirectory: true);
+            if (File.Exists(project))
+            {
+                projects.Add(project);
+            }
         }
 
         foreach (var project in projects.OrderBy(f => f))
