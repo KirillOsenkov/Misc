@@ -1,0 +1,1 @@
+PerfView stop /NoGui /AcceptEULA /NoView /Zip /LogFile:perfview-stop.log
