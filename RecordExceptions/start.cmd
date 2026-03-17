@@ -1,1 +1,1 @@
-PerfView start /NoGui /AcceptEULA /TrustPdbs /KernelEvents:Process,ImageLoad /ClrEvents:Binder,Loader,Exception,Jit,JittedMethodILToNativeMap,Stack /ClrEventLevel:Informational /NoNGenRundown /LogFile:perfview-start.log Trace.etl
+PerfView start /NoGui /AcceptEULA /TrustPdbs /BufferSize:1024 /StackCompression /KernelEvents:Process,ImageLoad /ClrEvents:Binder,Loader,Exception,Jit,JitSymbols,JittedMethodILToNativeMap,Stack /ClrEventLevel:Informational /LogFile:perfview-start.log Trace.etl
