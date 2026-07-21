@@ -1,6 +1,8 @@
 // Minimal-latency drag test: D3D11 flip-model swapchain, waitable object,
 // max frame latency 1, optional vsync-off with tearing.
-// Keys: V = toggle vsync, Esc = quit. Drag anywhere; the square follows the cursor.
+// Keys: V = toggle vsync, C = custom-rendered cursor (hides the hardware cursor
+// and draws a crosshair in-frame, so cursor and content share the same latency),
+// F11 = borderless fullscreen, Esc = quit. Drag anywhere; the square follows the cursor.
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -32,6 +34,7 @@ class DragTestForm : Form
     readonly object _resizeLock = new object();
     volatile bool _needResize;
     volatile bool _vsync = true;
+    volatile bool _customCursor;
     volatile bool _running = true;
     bool _allowTearing;
     string _adapterName = "?";
@@ -135,6 +138,16 @@ class DragTestForm : Form
                 var rect = new Vortice.RawRect(p.X - half, p.Y - half, p.X + half, p.Y + half);
                 _context1.ClearView(_rtv, new Color4(1f, 0.55f, 0f, 1f), new[] { rect });
 
+                if (_customCursor)
+                {
+                    // Crosshair drawn in the same frame as the square: they can
+                    // never separate, so the drag feels glued even at 60 Hz.
+                    const int arm = 16;
+                    var white = new Color4(1f, 1f, 1f, 1f);
+                    _context1.ClearView(_rtv, white, new[] { new Vortice.RawRect(p.X - arm, p.Y - 1, p.X + arm, p.Y + 2) });
+                    _context1.ClearView(_rtv, white, new[] { new Vortice.RawRect(p.X - 1, p.Y - arm, p.X + 2, p.Y + arm) });
+                }
+
                 if (_vsync)
                     _swapChain.Present(1, PresentFlags.None);
                 else
@@ -149,7 +162,8 @@ class DragTestForm : Form
                 frames = 0;
                 lastTitleUpdate = now;
                 var mode = _vsync ? "vsync ON" : (_allowTearing ? "vsync OFF + tearing" : "vsync OFF");
-                var title = $"DragTest — {_adapterName} — {mode} — {fps:F0} fps — [V] toggle vsync, [Esc] quit";
+                var cur = _customCursor ? "custom cursor" : "system cursor";
+                var title = $"DragTest — {_adapterName} — {mode} — {cur} — {fps:F0} fps — [V] vsync, [C] cursor, [F11] fullscreen, [Esc] quit";
                 try { BeginInvoke(() => Text = title); } catch { }
             }
         }
@@ -166,6 +180,11 @@ class DragTestForm : Form
     {
         base.OnKeyDown(e);
         if (e.KeyCode == Keys.V) _vsync = !_vsync;
+        if (e.KeyCode == Keys.C)
+        {
+            _customCursor = !_customCursor;
+            if (_customCursor) Cursor.Hide(); else Cursor.Show();
+        }
         if (e.KeyCode == Keys.F11) ToggleFullscreen();
         if (e.KeyCode == Keys.Escape) Close();
     }
@@ -197,6 +216,7 @@ class DragTestForm : Form
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
         _running = false;
+        if (_customCursor) Cursor.Show();
         base.OnFormClosed(e);
     }
 
